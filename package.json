@@ -1,0 +1,32 @@
+{
+  "name": "@ray-d-song/scripts",
+  "version": "0.1.0",
+  "private": false,
+  "bin": {
+    "cli": "./dist/cli.mjs"
+  },
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "keywords": [],
+  "author": "Ray-D-Song",
+  "license": "MIT",
+  "description": "Scripts for daily use",
+  "type": "module",
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "glob": "^11.0.1",
+    "rollup": "^4.35.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./cli": "./dist/cli.mjs"
+  }
+}
