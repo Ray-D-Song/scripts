@@ -1,10 +1,8 @@
-#!/usr/bin/env node
-
+// 导入所需模块
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { spawn } from 'child_process';
 
 // 获取当前目录
 const __filename = fileURLToPath(import.meta.url);
@@ -42,25 +40,9 @@ async function runScript() {
   try {
     switch (scriptType.toLowerCase()) {
       case 'latex-render':
-        // 执行 LatexRender 脚本
-        const latexRenderPath = path.join(__dirname, 'LatexRender.mjs');
-        
-        // 检查脚本文件是否存在
-        try {
-          await fs.access(latexRenderPath);
-        } catch (err) {
-          console.error(`错误: 找不到 LaTeX 渲染器脚本。`);
-          process.exit(1);
-        }
-        
-        // 使用 spawn 执行脚本
-        const latexRender = spawn('node', [latexRenderPath, ...remainingArgs], {
-          stdio: 'inherit'
-        });
-        
-        latexRender.on('close', (code) => {
-          process.exit(code);
-        });
+        // 设置正确的参数，然后动态导入并执行 LatexRender 模块
+        process.argv = [process.argv[0], process.argv[1], ...remainingArgs];
+        await import('./LatexRender/index.mjs');
         break;
         
       default:

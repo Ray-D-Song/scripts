@@ -3,6 +3,65 @@ import { promises } from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+// 导入所需模块
+
+// 获取当前目录
+const __filename$1 = fileURLToPath(import.meta.url);
+dirname(__filename$1);
+
+// 解析命令行参数
+const args$1 = process.argv.slice(2);
+let scriptType = null;
+const remainingArgs = [];
+
+// 遍历命令行参数
+for (let i = 0; i < args$1.length; i++) {
+  if (args$1[i] === '-s' && i + 1 < args$1.length) {
+    scriptType = args$1[i + 1];
+    i++; // 跳过下一个参数
+  } else {
+    remainingArgs.push(args$1[i]);
+  }
+}
+
+// 如果未提供脚本类型，显示使用说明并退出
+if (!scriptType) {
+  console.log('用法: scripts -s <脚本类型> [脚本特定参数]');
+  console.log('');
+  console.log('可用的脚本类型:');
+  console.log('  latex-render    LaTeX 渲染器，将 LaTeX 文件转换为 HTML');
+  console.log('');
+  console.log('例如:');
+  console.log('  scripts -s latex-render -i /path/to/input -o /path/to/output');
+  process.exit(1);
+}
+
+// 根据脚本类型执行相应的脚本
+async function runScript() {
+  try {
+    switch (scriptType.toLowerCase()) {
+      case 'latex-render':
+        // 设置正确的参数，然后动态导入并执行 LatexRender 模块
+        process.argv = [process.argv[0], process.argv[1], ...remainingArgs];
+        await Promise.resolve().then(function () { return index; });
+        break;
+        
+      default:
+        console.error(`错误: 未知的脚本类型 "${scriptType}"`);
+        console.log('可用的脚本类型: latex-render');
+        process.exit(1);
+    }
+  } catch (err) {
+    console.error('执行脚本时发生错误:', err);
+    process.exit(1);
+  }
+}
+
+runScript().catch(err => {
+  console.error('致命错误:', err);
+  process.exit(1);
+});
+
 // 解析命令行参数
 const args = process.argv.slice(2);
 let inputDir = null;
@@ -1105,4 +1164,8 @@ async function generateHtml() {
 generateHtml().catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
+});
+
+var index = /*#__PURE__*/Object.freeze({
+  __proto__: null
 });

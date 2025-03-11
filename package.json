@@ -1,9 +1,9 @@
 {
   "name": "@ray-d-song/scripts",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "bin": {
-    "cli": "./dist/cli.mjs"
+    "scripts": "./dist/scripts.mjs"
   },
   "scripts": {
     "build": "rollup -c"
@@ -27,6 +27,6 @@
     "access": "public"
   },
   "exports": {
-    "./cli": "./dist/cli.mjs"
+    "./cli": "./dist/scripts.mjs"
   }
 }
