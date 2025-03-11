@@ -43,7 +43,7 @@ async function runScript() {
     switch (scriptType.toLowerCase()) {
       case 'latex-render':
         // 执行 LatexRender 脚本
-        const latexRenderPath = path.join(__dirname, 'LatexRender', 'index.mjs');
+        const latexRenderPath = path.join(__dirname, 'LatexRender.mjs');
         
         // 检查脚本文件是否存在
         try {
