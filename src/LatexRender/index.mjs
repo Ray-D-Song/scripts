@@ -103,6 +103,10 @@ const cssContent = `
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Noto Serif CJK SC", "Source Han Serif SC", "Source Han Serif CN", serif;
   line-height: 1.6;
@@ -126,6 +130,22 @@ pre {
   padding: 15px;
   border-radius: 5px;
   overflow-x: auto;
+}
+
+.code-marker {
+  display: inline-block;
+  background-color: #ffeb3b;
+  color: #000;
+  padding: 0 5px;
+  margin: 0 2px;
+  border-radius: 3px;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.language-shell {
+  background-color: #1e1e1e;
+  color: #f8f8f8;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -535,6 +555,12 @@ function convertLatexToHtml(latex) {
   // Replace code listings
   html = html.replace(/\\begin\{lstlisting\}([\s\S]*?)\\end\{lstlisting\}/g, '<pre><code>$1</code></pre>');
   html = html.replace(/\\begin\{verbatim\}([\s\S]*?)\\end\{verbatim\}/g, '<pre><code>$1</code></pre>');
+
+  // 处理shell代码块
+  html = html.replace(/\{shell\}([\s\S]*?)\{shell\}/g, '<pre><code class="language-shell">$1</code></pre>');
+  
+  // 处理代码中的##数字标记（将它们转换为HTML注释或行内备注）
+  html = html.replace(/(##\s*\d+)/g, '<span class="code-marker">$1</span>');
 
   // Replace LaTeX special characters
   html = html.replace(/\\&/g, '&amp;');
@@ -996,7 +1022,6 @@ function createHtmlTemplate(title, content, headExtra = '') {
           --toc-bg: #222;
           --highlight-section-bg: #2d2d2d;
           --highlight-section-border: #58a6ff;
-
         }
       \`;
       
